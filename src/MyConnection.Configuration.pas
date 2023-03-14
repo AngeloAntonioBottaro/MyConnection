@@ -8,7 +8,7 @@ uses
   MyConnection.Types;
 
 type
-  TMyConnetionConfiguration = class(TInterfacedObject, iMyConnectionConfiguration)
+  TMyConnetionConfiguration = class(TInterfacedObject, IMyConnectionConfiguration)
   private
     FHost: string;
     FUserName: string;
@@ -18,40 +18,38 @@ type
     FDriverID: string;
     FConnectionComponent: TMyConnectionComponent;
     FConnectionSingleton: Boolean;
-
-    function DesCriptografaSenha(pStr: String): String;
   protected
-    function ClearConfiguration: iMyConnectionConfiguration;
+    function ClearConfiguration: IMyConnectionConfiguration;
 
-    function DriverID(aValue: string): iMyConnectionConfiguration; overload;
+    function DriverID(AValue: string): IMyConnectionConfiguration; overload;
     function DriverID: string; overload;
-    function Host(aValue: string): iMyConnectionConfiguration; overload;
+    function Host(AValue: string): IMyConnectionConfiguration; overload;
     function Host: string; overload;
-    function UserName(aValue: string): iMyConnectionConfiguration; overload;
+    function UserName(AValue: string): IMyConnectionConfiguration; overload;
     function UserName: string; overload;
-    function Database(aValue: string): iMyConnectionConfiguration; overload;
+    function Database(AValue: string): IMyConnectionConfiguration; overload;
     function Database: string; overload;
-    function Port(aValue: string): iMyConnectionConfiguration; overload;
-    function Port(aValue: Integer): iMyConnectionConfiguration; overload;
+    function Port(AValue: string): IMyConnectionConfiguration; overload;
+    function Port(AValue: Integer): IMyConnectionConfiguration; overload;
     function Port: string; overload;
-    function Password(aValue: string): iMyConnectionConfiguration; overload;
+    function Password(AValue: string): IMyConnectionConfiguration; overload;
     function Password: string; overload;
-    function ComponentTypeFireDac: iMyConnectionConfiguration;
+    function ComponentTypeFireDac: IMyConnectionConfiguration;
     function ComponentType: TMyConnectionComponent; overload;
-    function ConnectionSingletonOn: iMyConnectionConfiguration;
-    function ConnectionSingletonOff: iMyConnectionConfiguration;
+    function ConnectionSingletonOn: IMyConnectionConfiguration;
+    function ConnectionSingletonOff: IMyConnectionConfiguration;
     function ConnectionSingleton: Boolean;
   public
-    class function New: iMyConnectionConfiguration;
+    class function New: IMyConnectionConfiguration;
     constructor Create;
   end;
 
 var
-  FConfiguration: iMyConnectionConfiguration;
+  FConfiguration: IMyConnectionConfiguration;
 
 implementation
 
-class function TMyConnetionConfiguration.New: iMyConnectionConfiguration;
+class function TMyConnetionConfiguration.New: IMyConnectionConfiguration;
 begin
    if(not Assigned(FConfiguration))then
       FConfiguration := Self.Create;
@@ -64,7 +62,7 @@ begin
    Self.ClearConfiguration;
 end;
 
-function TMyConnetionConfiguration.ClearConfiguration: iMyConnectionConfiguration;
+function TMyConnetionConfiguration.ClearConfiguration: IMyConnectionConfiguration;
 begin
    Result := Self;
 
@@ -77,10 +75,10 @@ begin
    FConnectionSingleton := True;
 end;
 
-function TMyConnetionConfiguration.DriverID(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.DriverID(AValue: string): IMyConnectionConfiguration;
 begin
    Result    := Self;
-   FDriverID := aValue.Trim;
+   FDriverID := AValue.Trim;
 end;
 
 function TMyConnetionConfiguration.DriverID: string;
@@ -88,10 +86,10 @@ begin
    Result := FDriverID;
 end;
 
-function TMyConnetionConfiguration.Host(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.Host(AValue: string): IMyConnectionConfiguration;
 begin
    Result := Self;
-   FHost  := aValue.Trim;
+   FHost  := AValue.Trim;
 end;
 
 function TMyConnetionConfiguration.Host: string;
@@ -99,10 +97,10 @@ begin
    Result := FHost;
 end;
 
-function TMyConnetionConfiguration.UserName(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.UserName(AValue: string): IMyConnectionConfiguration;
 begin
    Result    := Self;
-   FUserName := aValue.Trim;
+   FUserName := AValue.Trim;
 end;
 
 function TMyConnetionConfiguration.UserName: string;
@@ -110,10 +108,10 @@ begin
    Result := FUserName;
 end;
 
-function TMyConnetionConfiguration.Database(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.Database(AValue: string): IMyConnectionConfiguration;
 begin
    Result    := Self;
-   FDatabase := aValue.Trim;
+   FDatabase := AValue.Trim;
 end;
 
 function TMyConnetionConfiguration.Database: string;
@@ -121,16 +119,16 @@ begin
    Result := FDatabase;
 end;
 
-function TMyConnetionConfiguration.Port(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.Port(AValue: string): IMyConnectionConfiguration;
 begin
    Result := Self;
-   FPort  := aValue.Trim;
+   FPort  := AValue.Trim;
 end;
 
-function TMyConnetionConfiguration.Port(aValue: Integer): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.Port(AValue: Integer): IMyConnectionConfiguration;
 begin
    Result := Self;
-   Port(IntToStr(aValue));
+   Port(IntToStr(AValue));
 end;
 
 function TMyConnetionConfiguration.Port: string;
@@ -138,18 +136,18 @@ begin
    Result := FPort;
 end;
 
-function TMyConnetionConfiguration.Password(aValue: string): iMyConnectionConfiguration;
+function TMyConnetionConfiguration.Password(AValue: string): IMyConnectionConfiguration;
 begin
    Result    := Self;
-   FPassword := aValue.Trim;
+   FPassword := AValue.Trim;
 end;
 
 function TMyConnetionConfiguration.Password: string;
 begin
-   Result := Self.DesCriptografaSenha(FPassword);
+   Result := FPassword;
 end;
 
-function TMyConnetionConfiguration.ComponentTypeFireDac: iMyConnectionConfiguration;
+function TMyConnetionConfiguration.ComponentTypeFireDac: IMyConnectionConfiguration;
 begin
    Result               := Self;
    FConnectionComponent := TMyConnectionComponent.Firedac;
@@ -168,34 +166,16 @@ begin
    Result := FConnectionSingleton;
 end;
 
-function TMyConnetionConfiguration.ConnectionSingletonOff: iMyConnectionConfiguration;
+function TMyConnetionConfiguration.ConnectionSingletonOff: IMyConnectionConfiguration;
 begin
    Result               := Self;
    FConnectionSingleton := False;
 end;
 
-function TMyConnetionConfiguration.ConnectionSingletonOn: iMyConnectionConfiguration;
+function TMyConnetionConfiguration.ConnectionSingletonOn: IMyConnectionConfiguration;
 begin
    Result               := Self;
    FConnectionSingleton := True;
-end;
-
-function TMyConnetionConfiguration.DesCriptografaSenha(pStr: String): String;
-const
- cNormal        = 'kywzxvutsrqponmljihgfedcbaKYWZXVUTSRQPONMLJIHGFEDCBA0987654321';
- cCriptografada = '1234567890ABCDEFGHIJLMNOPQRSTUVXZWYKabcdefghijlmnopqrstuvxzwyk';
-var
- i: Integer;
-begin
-   for i := 1 to Length(pStr) do
-   begin
-      if(Pos(pStr[i], cNormal) <> 0)then
-      begin
-         pStr[i] := cCriptografada[Pos(pStr[i], cNormal)];
-      end;
-   end;
-
-   Result := pStr;
 end;
 
 end.

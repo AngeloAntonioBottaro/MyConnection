@@ -8,28 +8,28 @@ uses
   MyConnection.FireDAC.ComponentConnection;
 
 type
-  iMyConnection = MyConnection.Interfaces.iMyConnection;
-  iMyQuery = MyConnection.Interfaces.iMyConnectionQuery;
+  IMyConnection = MyConnection.Interfaces.IMyConnection;
+  IMyQuery = MyConnection.Interfaces.IMyConnectionQuery;
 
-  TMyConnection = class(TInterfacedObject, iMyConnection)
+  TMyConnection = class(TInterfacedObject, IMyConnection)
   private
-    FConfiguration: iMyConnectionConfiguration;
+    FConfiguration: IMyConnectionConfiguration;
   protected
-    function Configuration: iMyConnectionConfiguration;
-    function Connection: iMyConnectionComponent;
-    function Query: iMyConnectionQuery;
+    function Configuration: IMyConnectionConfiguration;
+    function Connection: IMyConnectionComponent;
+    function Query: IMyConnectionQuery;
   public
-    class function New: iMyConnection;
+    class function New: IMyConnection;
   end;
 
-function MyConn: iMyConnection;
-function MyConnNew: iMyConnection;
-function MyQuery: iMyConnectionQuery;
-function MyQueryNew: iMyConnectionQuery;
+function MyConn: IMyConnection;
+function MyConnNew: IMyConnection;
+function MyQuery: IMyConnectionQuery;
+function MyQueryNew: IMyConnectionQuery;
 
 var
-  FConnection: iMyConnection;
-  FQuery: iMyConnectionQuery;
+  FConnection: IMyConnection;
+  FQuery: IMyConnectionQuery;
 
 implementation
 
@@ -37,12 +37,12 @@ uses
   MyConnection.Configuration,
   MyConnection.FireDAC.Query;
 
-class function TMyConnection.New: iMyConnection;
+class function TMyConnection.New: IMyConnection;
 begin
    Result := Self.Create;
 end;
 
-function TMyConnection.Configuration: iMyConnectionConfiguration;
+function TMyConnection.Configuration: IMyConnectionConfiguration;
 begin
    if(not Assigned(FConfiguration))then
       FConfiguration := TMyConnetionConfiguration.New;
@@ -50,14 +50,14 @@ begin
    Result := FConfiguration;
 end;
 
-function TMyConnection.Connection: iMyConnectionComponent;
+function TMyConnection.Connection: IMyConnectionComponent;
 begin
    case(Configuration.ComponentType)of
      TMyConnectionComponent.Firedac: Result := TMyFireDACConnection.New;
    end;
 end;
 
-function TMyConnection.Query: iMyConnectionQuery;
+function TMyConnection.Query: IMyConnectionQuery;
 begin
    case(Configuration.ComponentType)of
      TMyConnectionComponent.Firedac: FQuery := TMyFireDACQuery.New;
@@ -66,12 +66,12 @@ begin
    Result := FQuery;
 end;
 
-function MyConnNew: iMyConnection;
+function MyConnNew: IMyConnection;
 begin
    FConnection := TMyConnection.New;
 end;
 
-function MyConn: iMyConnection;
+function MyConn: IMyConnection;
 begin
    if(not Assigned(FConnection))then
      MyConnNew;
@@ -79,14 +79,14 @@ begin
    Result := FConnection;
 end;
 
-function MyQueryNew: iMyConnectionQuery;
+function MyQueryNew: IMyConnectionQuery;
 begin
    FQuery := MyConn.Query;
 
    Result := FQuery;
 end;
 
-function MyQuery: iMyConnectionQuery;
+function MyQuery: IMyConnectionQuery;
 begin
    if(not Assigned(FQuery))then
      MyQueryNew;

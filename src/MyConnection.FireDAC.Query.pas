@@ -22,42 +22,42 @@ uses
   MyConnection.FireDAC.ComponentConnection;
 
 type
-  TMyFireDACQuery = class(TInterfacedObject, iMyConnectionQuery)
+  TMyFireDACQuery = class(TInterfacedObject, IMyConnectionQuery)
   private
     FConnectionsFiredac: iMyConnectionComponent;
     FQuery: TFDQuery;
   protected
-    function Close: iMyConnectionQuery;
-    function Clear: iMyConnectionQuery;
-    function Add(aValue: String): iMyConnectionQuery;
-    function AddParam(aParam: String; Value: Variant): iMyConnectionQuery;
-    function Text(aValue: String): iMyConnectionQuery;
+    function Close: IMyConnectionQuery;
+    function Clear: IMyConnectionQuery;
+    function Add(AValue: String): IMyConnectionQuery;
+    function AddParam(AParam: String; Value: Variant): IMyConnectionQuery;
+    function Text(AValue: String): IMyConnectionQuery;
     function SQL: TStrings;
-    function ExecSQL: iMyConnectionQuery; overload;
-    function ExecSQL(const ASQL: String): iMyConnectionQuery; overload;
-    function Open: iMyConnectionQuery; overload;
-    function Open(const ASQL: String): iMyConnectionQuery; overload;
+    function ExecSQL: IMyConnectionQuery; overload;
+    function ExecSQL(const ASQL: String): IMyConnectionQuery; overload;
+    function Open: IMyConnectionQuery; overload;
+    function Open(const ASQL: String): IMyConnectionQuery; overload;
 
-    function Append: iMyConnectionQuery;
-    function Edit: iMyConnectionQuery;
-    function Post: iMyConnectionQuery;
+    function Append: IMyConnectionQuery;
+    function Edit: IMyConnectionQuery;
+    function Post: IMyConnectionQuery;
 
     function IsEmpty: Boolean;
     function RowsAffected: Integer;
-    function FieldByName(aValue: string): TField;
+    function FieldByName(AValue: string): TField;
     function RecordCount: Integer;
 
     function DataSet: TDataSet;
-    function DataSource(aValue: TDataSource): iMyConnectionQuery;
+    function DataSource(AValue: TDataSource): IMyConnectionQuery;
   public
-    class function New: iMyConnectionQuery;
+    class function New: IMyConnectionQuery;
     constructor Create;
     destructor Destroy; override;
   end;
 
 implementation
 
-class function TMyFireDACQuery.New: iMyConnectionQuery;
+class function TMyFireDACQuery.New: IMyConnectionQuery;
 begin
    Result := Self.Create;
 end;
@@ -77,38 +77,37 @@ end;
 destructor TMyFireDACQuery.Destroy;
 begin
    FreeAndNil(FQuery);
-
    inherited;
 end;
 
-function TMyFireDACQuery.Close: iMyConnectionQuery;
+function TMyFireDACQuery.Close: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Close;
 end;
 
-function TMyFireDACQuery.Clear: iMyConnectionQuery;
+function TMyFireDACQuery.Clear: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.SQL.Clear;
 end;
 
-function TMyFireDACQuery.Add(aValue: String): iMyConnectionQuery;
+function TMyFireDACQuery.Add(AValue: String): IMyConnectionQuery;
 begin
    Result := Self;
-   FQuery.SQL.Add(aValue);
+   FQuery.SQL.Add(AValue);
 end;
 
-function TMyFireDACQuery.AddParam(aParam: String; Value: Variant): iMyConnectionQuery;
+function TMyFireDACQuery.AddParam(AParam: String; Value: Variant): IMyConnectionQuery;
 begin
    Result := Self;
-   FQuery.ParamByName(aParam).Value := Value;
+   FQuery.ParamByName(AParam).Value := Value;
 end;
 
-function TMyFireDACQuery.Text(aValue: String): iMyConnectionQuery;
+function TMyFireDACQuery.Text(AValue: String): IMyConnectionQuery;
 begin
    Result          := Self;
-   FQuery.SQL.Text := Trim(aValue);
+   FQuery.SQL.Text := Trim(AValue);
 end;
 
 function TMyFireDACQuery.SQL: TStrings;
@@ -116,43 +115,43 @@ begin
    Result := FQuery.SQL;
 end;
 
-function TMyFireDACQuery.ExecSQL: iMyConnectionQuery;
+function TMyFireDACQuery.ExecSQL: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.ExecSQL;
 end;
 
-function TMyFireDACQuery.ExecSQL(const ASQL: String): iMyConnectionQuery;
+function TMyFireDACQuery.ExecSQL(const ASQL: String): IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.ExecSQL(ASQL);
 end;
 
-function TMyFireDACQuery.Open: iMyConnectionQuery;
+function TMyFireDACQuery.Open: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Open;
 end;
 
-function TMyFireDACQuery.Open(const ASQL: String): iMyConnectionQuery;
+function TMyFireDACQuery.Open(const ASQL: String): IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Open(ASQL);
 end;
 
-function TMyFireDACQuery.Append: iMyConnectionQuery;
+function TMyFireDACQuery.Append: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Append;
 end;
 
-function TMyFireDACQuery.Edit: iMyConnectionQuery;
+function TMyFireDACQuery.Edit: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Edit;
 end;
 
-function TMyFireDACQuery.Post: iMyConnectionQuery;
+function TMyFireDACQuery.Post: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Post;
@@ -168,9 +167,9 @@ begin
    Result := FQuery.RowsAffected;
 end;
 
-function TMyFireDACQuery.FieldByName(aValue: string): TField;
+function TMyFireDACQuery.FieldByName(AValue: string): TField;
 begin
-   Result := Self.DataSet.FieldByName(aValue);
+   Result := Self.DataSet.FieldByName(AValue);
 end;
 
 function TMyFireDACQuery.RecordCount: Integer;
@@ -183,10 +182,10 @@ begin
    Result := FQuery;
 end;
 
-function TMyFireDACQuery.DataSource(aValue: TDataSource): iMyConnectionQuery;
+function TMyFireDACQuery.DataSource(AValue: TDataSource): IMyConnectionQuery;
 begin
    Result         := Self;
-   aValue.DataSet := Self.DataSet;
+   AValue.DataSet := Self.DataSet;
 end;
 
 end.

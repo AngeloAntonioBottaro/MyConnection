@@ -15,30 +15,34 @@ uses
   FireDAC.Stan.Pool,
   FireDAC.Stan.Async,
   FireDAC.Phys,
-  {$ifndef CONSOLE}  FireDAC.VCLUI.Wait,
-  {$EndIf}  Data.DB,
+  {$ifndef CONSOLE}
+  FireDAC.VCLUI.Wait,
+  {$EndIf}
   FireDAC.Comp.Client,
   Firedac.DApt,
   FireDAC.Comp.UI,
-  FireDAC.Phys.MySQLDef,
+  FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef,
   FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef,
+  Data.DB,
   MyConnection.Interfaces,
   MyConnection.Configuration;
 
 type
-  TMyFireDACConnection = class(TInterfacedObject, iMyConnectionComponent)
+  TMyFireDACConnection = class(TInterfacedObject, IMyConnectionComponent)
   private
     FConnection: TFDConnection;
-    function TestFieldsComponentConnection: iMyConnectionComponent;
+    function TestFieldsComponentConnection: IMyConnectionComponent;
   protected
     function Component: TComponent;
     function TestConnectionOnly: Boolean;
     function TestConnection: Boolean;
-    function Open: iMyConnectionComponent;
-    function Close: iMyConnectionComponent;
-    function LoadConnectionConfig: iMyConnectionComponent;
+    function Open: IMyConnectionComponent;
+    function Close: IMyConnectionComponent;
+    function LoadConnectionConfig: IMyConnectionComponent;
   public
-    class function New: iMyConnectionComponent;
+    class function New: IMyConnectionComponent;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -48,7 +52,7 @@ var
 
 implementation
 
-class function TMyFireDACConnection.New: iMyConnectionComponent;
+class function TMyFireDACConnection.New: IMyConnectionComponent;
 begin
    if(TMyConnetionConfiguration.New.ConnectionSingleton)then
    begin
@@ -94,36 +98,36 @@ end;
 
 function TMyFireDACConnection.TestConnection: Boolean;
 var
- vOld: Boolean;
+ LOld: Boolean;
 begin
    Self.TestFieldsComponentConnection;
    try
-     vOld                  := FConnection.Connected;
+     LOld                  := FConnection.Connected;
      FConnection.Connected := True;
      Result                := FConnection.Connected;
 
-     if(FConnection.Connected <> vOld)then
-       FConnection.Connected := vOld;
+     if(FConnection.Connected <> LOld)then
+       FConnection.Connected := LOld;
 
    except on E: exception do
      raise Exception.Create('Conexão não pode ser realizada: ' + E.Message);
    end;
 end;
 
-function TMyFireDACConnection.Open: iMyConnectionComponent;
+function TMyFireDACConnection.Open: IMyConnectionComponent;
 begin
    Result := Self;
    Self.TestFieldsComponentConnection;
    FConnection.Connected := True;
 end;
 
-function TMyFireDACConnection.Close: iMyConnectionComponent;
+function TMyFireDACConnection.Close: IMyConnectionComponent;
 begin
    Result := Self;
    FConnection.Connected := False;
 end;
 
-function TMyFireDACConnection.LoadConnectionConfig: iMyConnectionComponent;
+function TMyFireDACConnection.LoadConnectionConfig: IMyConnectionComponent;
 begin
    Result := Self;
    FConnection.Connected := False;
@@ -136,32 +140,32 @@ begin
    FConnection.Params.Add('Port='   + TMyConnetionConfiguration.New.Port);
 end;
 
-function TMyFireDACConnection.TestFieldsComponentConnection: iMyConnectionComponent;
+function TMyFireDACConnection.TestFieldsComponentConnection: IMyConnectionComponent;
 var
- vTemp: string;
+ LTemp: string;
 begin
    Result := Self;
-   vTemp  := EmptyStr;
+   LTemp  := EmptyStr;
 
    if(Trim(TMyConnetionConfiguration.New.DriverID) = EmptyStr)then
-     vTemp := vTemp + 'DriverID. ';
+     LTemp := LTemp + 'DriverID. ';
 
    if(Trim(TMyConnetionConfiguration.New.Database) = EmptyStr)then
-     vTemp := vTemp + 'Host. ';
+     LTemp := LTemp + 'Host. ';
 
    if(Trim(FConnection.Params.UserName) = EmptyStr)then
-     vTemp := vTemp + 'Usuário. ';
+     LTemp := LTemp + 'Usuário. ';
 
    if(Trim(FConnection.Params.Password) = EmptyStr)then
-     vTemp := vTemp + 'Senha. ';
+     LTemp := LTemp + 'Senha. ';
 
    if(Trim(FConnection.Params.Database) = EmptyStr)then
-     vTemp := vTemp + 'Nome banco.';
+     LTemp := LTemp + 'Nome banco.';
 
-   if(vTemp <> EmptyStr)then
+   if(LTemp <> EmptyStr)then
      raise Exception.Create('Para realizar a conexão com o banco de dados '+
                             'os seguintes dados devem ser preenchidos: ' + sLineBreak +
-                            vTemp);
+                            LTemp.Trim);
 end;
 
 end.

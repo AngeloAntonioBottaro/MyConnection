@@ -8,71 +8,71 @@ uses
   MyConnection.Types;
 
 type
-  iMyConnectionQuery = interface
+  IMyConnectionQuery = interface
    ['{48136EAF-7FCB-407E-B97A-51648867D6B5}']
-   function Close: iMyConnectionQuery;
-   function Clear: iMyConnectionQuery;
-   function Add(aValue: String): iMyConnectionQuery;
-   function AddParam(aParam: String; Value: Variant): iMyConnectionQuery;
-   function Text(aValue: String): iMyConnectionQuery;
+   function Close: IMyConnectionQuery;
+   function Clear: IMyConnectionQuery;
+   function Add(AValue: String): IMyConnectionQuery;
+   function AddParam(AParam: String; Value: Variant): IMyConnectionQuery;
+   function Text(AValue: String): IMyConnectionQuery;
    function SQL: TStrings;
-   function ExecSQL: iMyConnectionQuery; overload;
-   function ExecSQL(const ASQL: String): iMyConnectionQuery; overload;
-   function Open: iMyConnectionQuery; overload;
-   function Open(const ASQL: String): iMyConnectionQuery; overload;
+   function ExecSQL: IMyConnectionQuery; overload;
+   function ExecSQL(const ASQL: String): IMyConnectionQuery; overload;
+   function Open: IMyConnectionQuery; overload;
+   function Open(const ASQL: String): IMyConnectionQuery; overload;
 
-   function Append: iMyConnectionQuery;
-   function Edit: iMyConnectionQuery;
-   function Post: iMyConnectionQuery;
+   function Append: IMyConnectionQuery;
+   function Edit: IMyConnectionQuery;
+   function Post: IMyConnectionQuery;
 
    function IsEmpty: Boolean;
    function RowsAffected: Integer;
-   function FieldByName(aValue: string): TField;
+   function FieldByName(AValue: string): TField;
    function RecordCount: Integer;
 
    function DataSet: TDataSet;
-   function DataSource(aValue: TDataSource): iMyConnectionQuery;
+   function DataSource(AValue: TDataSource): IMyConnectionQuery;
   end;
 
-  iMyConnectionComponent = interface
+  IMyConnectionComponent = interface
    ['{27BA6E7E-3F54-49BF-AF82-DC6C2473E71B}']
    function Component: TComponent;
    function TestConnectionOnly: Boolean;
    function TestConnection: Boolean;
-   function Open: iMyConnectionComponent;
-   function Close: iMyConnectionComponent;
-   function LoadConnectionConfig: iMyConnectionComponent;
+   function Open: IMyConnectionComponent;
+   function Close: IMyConnectionComponent;
+   function LoadConnectionConfig: IMyConnectionComponent;
   end;
 
-  iMyConnectionConfiguration = interface
+  IMyConnectionConfiguration = interface
    ['{4214A983-90C0-49F2-BD7B-B7D5F43FD0F0}']
-   function ClearConfiguration: iMyConnectionConfiguration;
+   function ClearConfiguration: IMyConnectionConfiguration;
 
-   function DriverID(aValue: string): iMyConnectionConfiguration; overload;
+   function DriverID(AValue: string): IMyConnectionConfiguration; overload;
    function DriverID: string; overload;
-   function Host(aValue: string): iMyConnectionConfiguration; overload;
+   function Host(AValue: string): IMyConnectionConfiguration; overload;
    function Host: string; overload;
-   function UserName(aValue: string): iMyConnectionConfiguration; overload;
+   function UserName(AValue: string): IMyConnectionConfiguration; overload;
    function UserName: string; overload;
-   function Database(aValue: string): iMyConnectionConfiguration; overload;
+   function Database(AValue: string): IMyConnectionConfiguration; overload;
    function Database: string; overload;
-   function Port(aValue: string): iMyConnectionConfiguration; overload;
-   function Port(aValue: Integer): iMyConnectionConfiguration; overload;
+   function Port(AValue: string): IMyConnectionConfiguration; overload;
+   function Port(AValue: Integer): IMyConnectionConfiguration; overload;
    function Port: string; overload;
-   function Password(aValue: string): iMyConnectionConfiguration; overload;
+   function Password(AValue: string): IMyConnectionConfiguration; overload;
    function Password: string; overload;
-   function ComponentTypeFireDac: iMyConnectionConfiguration;
+   function ComponentTypeFireDac: IMyConnectionConfiguration;
    function ComponentType: TMyConnectionComponent; overload;
-   function ConnectionSingletonOn: iMyConnectionConfiguration;
-   function ConnectionSingletonOff: iMyConnectionConfiguration;
+   function ConnectionSingletonOn: IMyConnectionConfiguration;
+   function ConnectionSingletonOff: IMyConnectionConfiguration;
    function ConnectionSingleton: Boolean;
   end;
 
-  iMyConnection = interface
+  IMyConnection = interface
    ['{015F7727-6871-4830-8B13-9136A0F04DB9}']
-   function Configuration: iMyConnectionConfiguration;
-   function Connection: iMyConnectionComponent;
-   function Query: iMyConnectionQuery;
+   function Configuration: IMyConnectionConfiguration;
+   function Connection: IMyConnectionComponent;
+   function Query: IMyConnectionQuery;
   end;
 
 implementation
