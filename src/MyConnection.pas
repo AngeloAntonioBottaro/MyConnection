@@ -95,17 +95,21 @@ begin
 end;
 
 {
-   TMyConnection.New
+   MyConn
     .Configuration
-     .DriverID('MySQL')
+     .ClearConfiguration
+     .DriverID('FB')
      .Host('localhost')
-     .UserName('root')
-     .Database('solusys_teste')
-     .Password('YCFYCL8kr3@')
-     .ComponentTypeFireDac;
+     .UserName('sysdba')
+     .Database('database.fdb')
+     .Password('masterkey')
+     .Port('3050')
+     .ComponentTypeFireDac
+     .ConnectionSingletonOn;
 
-    MyConn
-    .Query
+    MyConn.Connection.TestConnection;
+
+    MyQueryNew
      .DataSource(DataSource1)
      .Close
      .Add('select * from parametros')

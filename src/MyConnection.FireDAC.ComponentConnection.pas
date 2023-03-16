@@ -48,7 +48,7 @@ type
   end;
 
 var
- FConnectionFireDac: TMyFireDACConnection;
+  FConnectionFireDac: IMyConnectionComponent;
 
 implementation
 

@@ -32,6 +32,7 @@ type
 
    function DataSet: TDataSet;
    function DataSource(AValue: TDataSource): IMyConnectionQuery;
+   function ExceptionZeroRecordsUpdated: Boolean;
   end;
 
   IMyConnectionComponent = interface

@@ -24,8 +24,9 @@ uses
 type
   TMyFireDACQuery = class(TInterfacedObject, IMyConnectionQuery)
   private
-    FConnectionsFiredac: iMyConnectionComponent;
+    FConnectionsFiredac: IMyConnectionComponent;
     FQuery: TFDQuery;
+    FExceptionZeroRecordsUpdated: Boolean;
   protected
     function Close: IMyConnectionQuery;
     function Clear: IMyConnectionQuery;
@@ -49,6 +50,7 @@ type
 
     function DataSet: TDataSet;
     function DataSource(AValue: TDataSource): IMyConnectionQuery;
+    function ExceptionZeroRecordsUpdated: Boolean;
   public
     class function New: IMyConnectionQuery;
     constructor Create;
@@ -118,13 +120,34 @@ end;
 function TMyFireDACQuery.ExecSQL: IMyConnectionQuery;
 begin
    Result := Self;
-   FQuery.ExecSQL;
+   FExceptionZeroRecordsUpdated := False;
+   try
+     FQuery.ExecSQL;
+   except on E: Exception do
+   begin
+      FExceptionZeroRecordsUpdated := pos('0 record(s) updated.', E.Message) > 0;
+      raise;
+   end
+   end;
+end;
+
+function TMyFireDACQuery.ExceptionZeroRecordsUpdated: Boolean;
+begin
+   Result := FExceptionZeroRecordsUpdated;
 end;
 
 function TMyFireDACQuery.ExecSQL(const ASQL: String): IMyConnectionQuery;
 begin
    Result := Self;
-   FQuery.ExecSQL(ASQL);
+   FExceptionZeroRecordsUpdated := False;
+   try
+     FQuery.ExecSQL(ASQL);
+   except on E: Exception do
+   begin
+      FExceptionZeroRecordsUpdated := pos('0 record(s) updated.', E.Message) > 0;
+      raise;
+   end
+   end;
 end;
 
 function TMyFireDACQuery.Open: IMyConnectionQuery;
@@ -169,7 +192,7 @@ end;
 
 function TMyFireDACQuery.FieldByName(AValue: string): TField;
 begin
-   Result := Self.DataSet.FieldByName(AValue);
+   Result := FQuery.FieldByName(AValue);
 end;
 
 function TMyFireDACQuery.RecordCount: Integer;
