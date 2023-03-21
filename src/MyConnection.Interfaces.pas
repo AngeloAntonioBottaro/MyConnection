@@ -49,8 +49,9 @@ type
    ['{4214A983-90C0-49F2-BD7B-B7D5F43FD0F0}']
    function ClearConfiguration: IMyConnectionConfiguration;
 
-   function DriverID(AValue: string): IMyConnectionConfiguration; overload;
-   function DriverID: string; overload;
+   function DriverFirebird: IMyConnectionConfiguration;
+   function DriverMySQL: IMyConnectionConfiguration;
+   function DriverID: string;
    function Host(AValue: string): IMyConnectionConfiguration; overload;
    function Host: string; overload;
    function UserName(AValue: string): IMyConnectionConfiguration; overload;

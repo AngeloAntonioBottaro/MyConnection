@@ -21,8 +21,9 @@ type
   protected
     function ClearConfiguration: IMyConnectionConfiguration;
 
-    function DriverID(AValue: string): IMyConnectionConfiguration; overload;
-    function DriverID: string; overload;
+    function DriverFirebird: IMyConnectionConfiguration;
+    function DriverMySQL: IMyConnectionConfiguration;
+    function DriverID: string;
     function Host(AValue: string): IMyConnectionConfiguration; overload;
     function Host: string; overload;
     function UserName(AValue: string): IMyConnectionConfiguration; overload;
@@ -75,10 +76,16 @@ begin
    FConnectionSingleton := True;
 end;
 
-function TMyConnetionConfiguration.DriverID(AValue: string): IMyConnectionConfiguration;
+function TMyConnetionConfiguration.DriverFirebird: IMyConnectionConfiguration;
 begin
    Result    := Self;
-   FDriverID := AValue.Trim;
+   FDriverID := 'FB';
+end;
+
+function TMyConnetionConfiguration.DriverMySQL: IMyConnectionConfiguration;
+begin
+   Result    := Self;
+   FDriverID := 'MySQL';
 end;
 
 function TMyConnetionConfiguration.DriverID: string;

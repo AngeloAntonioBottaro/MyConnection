@@ -98,12 +98,12 @@ end;
    MyConn
     .Configuration
      .ClearConfiguration
-     .DriverID('FB')
      .Host('localhost')
      .UserName('sysdba')
      .Database('database.fdb')
      .Password('masterkey')
      .Port('3050')
+     .DriverFirebird
      .ComponentTypeFireDac
      .ConnectionSingletonOn;
 
