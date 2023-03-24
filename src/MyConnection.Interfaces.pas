@@ -30,6 +30,8 @@ type
    function FieldByName(AValue: string): TField;
    function RecordCount: Integer;
 
+   function IndexFieldNames(AValue: string): IMyConnectionQuery; overload;
+   function IndexFieldNames: string; overload;
    function DataSet: TDataSet;
    function DataSource(AValue: TDataSource): IMyConnectionQuery;
    function ExceptionZeroRecordsUpdated: Boolean;

@@ -48,6 +48,9 @@ type
     function FieldByName(AValue: string): TField;
     function RecordCount: Integer;
 
+    function IndexFieldNames(AValue: string): IMyConnectionQuery; overload;
+    function IndexFieldNames: string; overload;
+
     function DataSet: TDataSet;
     function DataSource(AValue: TDataSource): IMyConnectionQuery;
     function ExceptionZeroRecordsUpdated: Boolean;
@@ -178,6 +181,20 @@ function TMyFireDACQuery.Post: IMyConnectionQuery;
 begin
    Result := Self;
    FQuery.Post;
+end;
+
+function TMyFireDACQuery.IndexFieldNames(AValue: string): IMyConnectionQuery;
+begin
+   Result := Self;
+   if(FQuery.IndexFieldNames = AValue)then
+     FQuery.IndexFieldNames := AValue + ':D'
+   else
+     FQuery.IndexFieldNames := AValue;
+end;
+
+function TMyFireDACQuery.IndexFieldNames: string;
+begin
+   Result := FQuery.IndexFieldNames;
 end;
 
 function TMyFireDACQuery.IsEmpty: Boolean;
