@@ -34,6 +34,8 @@ type
    function IndexFieldNames: string; overload;
    function DataSet: TDataSet;
    function DataSource(AValue: TDataSource): IMyConnectionQuery;
+   function DisplayFormat(AField, AMask: string): IMyConnectionQuery;
+
    function ExceptionZeroRecordsUpdated: Boolean;
   end;
 

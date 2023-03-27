@@ -53,6 +53,8 @@ type
 
     function DataSet: TDataSet;
     function DataSource(AValue: TDataSource): IMyConnectionQuery;
+    function DisplayFormat(AField, AMask: string): IMyConnectionQuery;
+
     function ExceptionZeroRecordsUpdated: Boolean;
   public
     class function New: IMyConnectionQuery;
@@ -132,6 +134,20 @@ begin
       raise;
    end
    end;
+end;
+
+function TMyFireDACQuery.DisplayFormat(AField, AMask: string): IMyConnectionQuery;
+var
+  LField: TField;
+begin
+   Result := Self;
+   LField := FQuery.FieldByName(AField);
+   if(LField is TFloatField)then
+    TFloatField(LField).DisplayFormat := AMask
+   else if(LField is TIntegerField)then
+     TIntegerField(LField).DisplayFormat := AMask
+   else if(LField is TCurrencyField)then
+     TCurrencyField(LField).DisplayFormat := AMask;
 end;
 
 function TMyFireDACQuery.ExceptionZeroRecordsUpdated: Boolean;
