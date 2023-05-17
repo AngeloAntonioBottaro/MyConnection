@@ -28,7 +28,16 @@ package pkMyConnection;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  vcl,
+  dbrtl,
+  dsnap,
+  vclFireDAC,
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon,
+  FireDACIBDriver,
+  FireDACMySQLDriver;
 
 contains
   MyConnection.Interfaces in 'src\MyConnection.Interfaces.pas',
@@ -36,6 +45,7 @@ contains
   MyConnection.Types in 'src\MyConnection.Types.pas',
   MyConnection.Configuration in 'src\MyConnection.Configuration.pas',
   MyConnection.FireDAC.Query in 'src\MyConnection.FireDAC.Query.pas',
-  MyConnection.FireDAC.ComponentConnection in 'src\MyConnection.FireDAC.ComponentConnection.pas';
+  MyConnection.FireDAC.ComponentConnection in 'src\MyConnection.FireDAC.ComponentConnection.pas',
+  MyConnection.MemoryTable in 'src\MyConnection.MemoryTable.pas';
 
 end.

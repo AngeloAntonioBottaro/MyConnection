@@ -26,16 +26,20 @@ function MyConn: IMyConnection;
 function MyConnNew: IMyConnection;
 function MyQuery: IMyConnectionQuery;
 function MyQueryNew: IMyConnectionQuery;
+function MyMemTable: IMyConnectionMemoryTable;
+function MyMemTableNew: IMyConnectionMemoryTable;
 
 var
   FConnection: IMyConnection;
   FQuery: IMyConnectionQuery;
+  FMemTable: IMyConnectionMemoryTable;
 
 implementation
 
 uses
   MyConnection.Configuration,
-  MyConnection.FireDAC.Query;
+  MyConnection.FireDAC.Query,
+  MyConnection.MemoryTable;
 
 class function TMyConnection.New: IMyConnection;
 begin
@@ -69,6 +73,7 @@ end;
 function MyConnNew: IMyConnection;
 begin
    FConnection := TMyConnection.New;
+   Result := FConnection;
 end;
 
 function MyConn: IMyConnection;
@@ -82,7 +87,6 @@ end;
 function MyQueryNew: IMyConnectionQuery;
 begin
    FQuery := MyConn.Query;
-
    Result := FQuery;
 end;
 
@@ -92,6 +96,20 @@ begin
      MyQueryNew;
 
    Result := FQuery;
+end;
+
+function MyMemTableNew: IMyConnectionMemoryTable;
+begin
+   FMemTable := TMyConnectionMemoryTable.New;
+   Result := FMemTable;
+end;
+
+function MyMemTable: IMyConnectionMemoryTable;
+begin
+   if(not Assigned(FMemTable))then
+     MyMemTableNew;
+
+   Result := FMemTable;
 end;
 
 {

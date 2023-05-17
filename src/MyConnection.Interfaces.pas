@@ -4,6 +4,7 @@ interface
 
 uses
   Data.DB,
+  Datasnap.DBClient,
   System.Classes,
   MyConnection.Types;
 
@@ -47,6 +48,9 @@ type
    function Open: IMyConnectionComponent;
    function Close: IMyConnectionComponent;
    function LoadConnectionConfig: IMyConnectionComponent;
+   function StartTransaction: IMyConnectionComponent;
+   function CommitTransaction: IMyConnectionComponent;
+   function RollbackTransaction: IMyConnectionComponent;
   end;
 
   IMyConnectionConfiguration = interface
@@ -72,6 +76,13 @@ type
    function ConnectionSingletonOn: IMyConnectionConfiguration;
    function ConnectionSingletonOff: IMyConnectionConfiguration;
    function ConnectionSingleton: Boolean;
+  end;
+
+  IMyConnectionMemoryTable = interface
+   ['{2870A18A-C588-43BC-8B6B-09C7D818686B}']
+   function Consultar(ASQL: string): IMyConnectionMemoryTable;
+   function Incluir(ACampoIdentificador: string): IMyConnectionMemoryTable;
+   function DataSet: TClientDataset;
   end;
 
   IMyConnection = interface

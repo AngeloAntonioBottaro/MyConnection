@@ -95,12 +95,22 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="dbrtl.dcp"/>
+        <DCCReference Include="dsnap.dcp"/>
+        <DCCReference Include="vclFireDAC.dcp"/>
+        <DCCReference Include="FireDAC.dcp"/>
+        <DCCReference Include="FireDACCommonDriver.dcp"/>
+        <DCCReference Include="FireDACCommon.dcp"/>
+        <DCCReference Include="FireDACIBDriver.dcp"/>
+        <DCCReference Include="FireDACMySQLDriver.dcp"/>
         <DCCReference Include="src\MyConnection.Interfaces.pas"/>
         <DCCReference Include="src\MyConnection.pas"/>
         <DCCReference Include="src\MyConnection.Types.pas"/>
         <DCCReference Include="src\MyConnection.Configuration.pas"/>
         <DCCReference Include="src\MyConnection.FireDAC.Query.pas"/>
         <DCCReference Include="src\MyConnection.FireDAC.ComponentConnection.pas"/>
+        <DCCReference Include="src\MyConnection.MemoryTable.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

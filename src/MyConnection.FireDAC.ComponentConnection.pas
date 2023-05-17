@@ -41,6 +41,9 @@ type
     function Open: IMyConnectionComponent;
     function Close: IMyConnectionComponent;
     function LoadConnectionConfig: IMyConnectionComponent;
+    function StartTransaction: IMyConnectionComponent;
+    function CommitTransaction: IMyConnectionComponent;
+    function RollbackTransaction: IMyConnectionComponent;
   public
     class function New: IMyConnectionComponent;
     constructor Create;
@@ -166,6 +169,24 @@ begin
      raise Exception.Create('Para realizar a conexão com o banco de dados '+
                             'os seguintes dados devem ser preenchidos: ' + sLineBreak +
                             LTemp.Trim);
+end;
+
+function TMyFireDACConnection.StartTransaction: IMyConnectionComponent;
+begin
+   Result := Self;
+   FConnection.StartTransaction;
+end;
+
+function TMyFireDACConnection.CommitTransaction: IMyConnectionComponent;
+begin
+   Result := Self;
+   FConnection.Commit;
+end;
+
+function TMyFireDACConnection.RollbackTransaction: IMyConnectionComponent;
+begin
+   Result := Self;
+   FConnection.Rollback;
 end;
 
 end.
