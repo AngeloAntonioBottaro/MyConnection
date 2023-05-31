@@ -27,8 +27,6 @@ object DemoViewMain: TDemoViewMain
     Padding.Right = 1
     Padding.Bottom = 2
     TabOrder = 0
-    ExplicitTop = 263
-    ExplicitWidth = 629
     object Button1: TButton
       Left = 581
       Top = 2
@@ -38,7 +36,6 @@ object DemoViewMain: TDemoViewMain
       Caption = 'Configuration'
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 327
     end
     object Button2: TButton
       Left = 3
@@ -59,7 +56,6 @@ object DemoViewMain: TDemoViewMain
       Caption = 'Query'
       TabOrder = 2
       OnClick = Button4Click
-      ExplicitLeft = 427
     end
   end
   object DBGrid1: TDBGrid

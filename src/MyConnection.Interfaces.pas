@@ -80,9 +80,11 @@ type
 
   IMyConnectionMemoryTable = interface
    ['{2870A18A-C588-43BC-8B6B-09C7D818686B}']
-   function Consultar(ASQL: string): IMyConnectionMemoryTable;
-   function Incluir(ACampoIdentificador: string): IMyConnectionMemoryTable;
+   function Open(ASQL: string): IMyConnectionMemoryTable; overload;
+   function Open(ASQL, AIdentifierField: string): IMyConnectionMemoryTable; overload;
+   function SaveOnDatabase: IMyConnectionMemoryTable; overload;
    function DataSet: TClientDataset;
+   function LastIDCreated: Integer;
   end;
 
   IMyConnection = interface

@@ -50,12 +50,12 @@ begin
    TMyConnection.New
     .Configuration
      .ClearConfiguration
-      .DriverID('MySQL')
+      .DriverFirebird
       .Host('127.0.0.1')
-      .UserName('root')
-      .Database('solusys_teste')
-      .Port(0)
-      .Password('YCFYCL8kr3@')
+      .UserName('sysdba')
+      .Database('C:\AABSoft\ERP\Database\DATABASE.FDB')
+      .Port('3050')
+      .Password('masterkey')
       .ComponentTypeFireDac;
 
    FQuery := TMyConnection.New.Query.DataSource(DS);

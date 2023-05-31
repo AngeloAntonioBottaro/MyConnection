@@ -16,14 +16,19 @@ type
     FQuery: IMyQuery;
     FClientDataSet: TClientDataSet;
     FDataSetProvider: TDataSetProvider;
-    procedure PreencherClientDataSet;
+    FIdentifierField: string;
+    FLastIDCreated: Integer;
+    procedure OpenClientDataSet;
+  protected
+    function Open(ASQL: string): IMyConnectionMemoryTable; overload;
+    function Open(ASQL, AIdentifierField: string): IMyConnectionMemoryTable; overload;
+    function SaveOnDatabase: IMyConnectionMemoryTable; 
+    function DataSet: TClientDataset;
+    function LastIDCreated: Integer;
   public
     class function New: IMyConnectionMemoryTable;
     constructor Create;
     destructor Destroy; override;
-    function Consultar(ASQL: string): IMyConnectionMemoryTable;
-    function Incluir(ACampoIdentificador: string): IMyConnectionMemoryTable;
-    function DataSet: TClientDataset;
   end;
 
 implementation
@@ -35,6 +40,7 @@ end;
 
 constructor TMyConnectionMemoryTable.Create;
 begin
+   FLastIDCreated   := 0;
    FDataSetProvider := TDataSetProvider.Create(nil);
    FClientDataSet   := TClientDataSet.Create(nil);
 end;
@@ -46,26 +52,35 @@ begin
    inherited;
 end;
 
+function TMyConnectionMemoryTable.LastIDCreated: Integer;
+begin
+   Result := FLastIDCreated;
+end;
+
 function TMyConnectionMemoryTable.DataSet: TClientDataset;
 begin
-   if(not Assigned(FClientDataSet))then
-     Exit(nil);
-
    Result := FClientDataSet;
 end;
 
-function TMyConnectionMemoryTable.Consultar(ASQL: String): IMyConnectionMemoryTable;
+function TMyConnectionMemoryTable.Open(ASQL: String): IMyConnectionMemoryTable;
+begin
+   Result := Self.Open(ASQL, '');
+end;
+
+function TMyConnectionMemoryTable.Open(ASQL, AIdentifierField: string): IMyConnectionMemoryTable;
 begin
    Result := Self;
+   FIdentifierField := AIdentifierField;
+
    FQuery := MyQueryNew;
    FQuery
     .Clear
     .Add(ASQL);
 
-   Self.PreencherClientDataSet;
+   Self.OpenClientDataSet;
 end;
 
-procedure TMyConnectionMemoryTable.PreencherClientDataSet;
+procedure TMyConnectionMemoryTable.OpenClientDataSet;
 begin
    FClientDataSet.Aggregates.Clear;
    FClientDataSet.Params.Clear;
@@ -77,15 +92,21 @@ begin
    FClientDataSet.Active := True;
 end;
 
-function TMyConnectionMemoryTable.Incluir(ACampoIdentificador: string): IMyConnectionMemoryTable;
+function TMyConnectionMemoryTable.SaveOnDatabase: IMyConnectionMemoryTable;
 var
   I: Integer;
-  LNomeCampo: String;
+  LFieldName: String;
 begin
    Result := Self;
 
    FQuery.Close;
    FQuery.Open;
+
+   if(not FIdentifierField.IsEmpty)then
+   begin
+      FQuery.FieldByName(FIdentifierField).Required := False;
+      FQuery.FieldByName(FIdentifierField).AutoGenerateValue := TAutoRefreshFlag.arAutoInc;
+   end;
 
    FClientDataSet.First;
    while(not FClientDataSet.Eof)do
@@ -94,18 +115,21 @@ begin
 
       for I := 0 to Pred(FClientDataSet.FieldCount) do
       begin
-        LNomeCampo := UpperCase(FClientDataSet.Fields[I].FieldName);
+        LFieldName := UpperCase(FClientDataSet.Fields[I].FieldName);
 
-        if(LNomeCampo.Equals(UpperCase(ACampoIdentificador)))then
+        if(LFieldName.Equals(UpperCase(FIdentifierField)))then
           Continue;
 
-        if(FQuery.DataSet.FindField(LNomeCampo) <> nil)then
-          FQuery.FieldByName(LNomeCampo).Value := FClientDataSet.FieldByName(LNomeCampo).Value;
+        if(FQuery.DataSet.FindField(LFieldName) <> nil)then
+          FQuery.FieldByName(LFieldName).Value := FClientDataSet.FieldByName(LFieldName).Value;
       end;
 
       FQuery.Post;
       FClientDataSet.Next;
    end;
+
+   if(not FIdentifierField.IsEmpty)then
+     FLastIDCreated := FQuery.FieldByName(FIdentifierField).AsInteger;
 end;
 
 end.
