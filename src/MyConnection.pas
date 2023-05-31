@@ -10,6 +10,7 @@ uses
 type
   IMyConnection = MyConnection.Interfaces.IMyConnection;
   IMyQuery = MyConnection.Interfaces.IMyConnectionQuery;
+  IMyTable = MyConnection.Interfaces.IMyConnectionMemoryTable;
 
   TMyConnection = class(TInterfacedObject, IMyConnection)
   private
