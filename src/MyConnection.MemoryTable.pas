@@ -90,6 +90,9 @@ begin
 
    FClientDataSet.SetProvider(FDataSetProvider);
    FClientDataSet.Active := True;
+
+   if(not FIdentifierField.IsEmpty)then
+     FClientDataSet.FieldByName(FIdentifierField).Required := False;
 end;
 
 function TMyConnectionMemoryTable.SaveOnDatabase: IMyConnectionMemoryTable;
